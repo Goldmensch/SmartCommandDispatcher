@@ -22,7 +22,7 @@ public abstract class SmartCommand implements TabExecutor {
             command.setName(ArrayUtils.buildString(args));
             subCommandMap.put(args, command);
         }else {
-            throw new CommandNotValidException(args);
+            throw new CommandNotValidException(command.getClass());
         }
     }
 
