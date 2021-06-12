@@ -16,10 +16,6 @@ import java.util.*;
 public abstract class SmartCommand implements TabExecutor {
     private final Map<String[], SmartSubCommand> subCommandMap = new HashMap<>();
 
-    public SmartCommand() {
-        init();
-    }
-
     public void registerSubCommand(SmartSubCommand command, String... args) {
         args = ArrayUtils.toLowerCase(args);
         if(isValid(args)) {
@@ -55,8 +51,6 @@ public abstract class SmartCommand implements TabExecutor {
 
         return new ArgValuedSubCommand(matchCommand, newArgs);
     }
-
-    public abstract void init();
 
     public abstract boolean noSubFound(String[] args, CommandSender sender, Command command, String label);
 
