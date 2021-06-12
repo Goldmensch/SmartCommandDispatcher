@@ -4,10 +4,7 @@ plugins {
 }
 
 group = "de.goldmensch"
-version = "1.0"
-
-java.sourceCompatibility = JavaVersion.VERSION_16
-java.targetCompatibility = JavaVersion.VERSION_16
+version = "1.0.1"
 
 repositories {
     mavenCentral()
@@ -47,6 +44,12 @@ publishing {
             name = "EldoNexus"
             url = uri(publishData.getRepository())
         }
+    }
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(16))
     }
 }
 
