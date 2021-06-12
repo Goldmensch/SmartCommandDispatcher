@@ -6,6 +6,7 @@ plugins {
 group = "de.goldmensch"
 version = "1.0.2"
 
+
 repositories {
     mavenCentral()
     maven("https://papermc.io/repo/repository/maven-public/")
