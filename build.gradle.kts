@@ -1,9 +1,10 @@
 plugins {
     java
+    `maven-publish`
 }
 
-group = "org.example"
-version = "1.0-SNAPSHOT"
+group = "de.goldmensch"
+version = "1.0"
 
 repositories {
     mavenCentral()
@@ -20,4 +21,16 @@ dependencies {
 
 tasks.getByName<Test>("test") {
     useJUnitPlatform()
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            groupId = "de.goldmensch"
+            artifactId = "SmartCommandDispatcher"
+            version = "1.0"
+
+            from(components["java"])
+        }
+    }
 }
