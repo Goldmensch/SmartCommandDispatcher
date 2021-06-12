@@ -6,6 +6,9 @@ plugins {
 group = "de.goldmensch"
 version = "1.0"
 
+java.sourceCompatibility = JavaVersion.VERSION_16
+java.targetCompatibility = JavaVersion.VERSION_16
+
 repositories {
     mavenCentral()
     maven("https://papermc.io/repo/repository/maven-public/")
