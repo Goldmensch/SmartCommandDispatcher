@@ -23,7 +23,7 @@ public abstract class SmartCommand implements TabExecutor {
     public void registerSubCommand(SmartSubCommand command, String... args) {
         args = ArrayUtils.toLowerCase(args);
         if(isValid(args)) {
-            command.setName(args[args.length-1]);
+            command.setName(ArrayUtils.buildString(args));
             subCommandMap.put(args, command);
         }else {
             throw new CommandNotValidException(args);

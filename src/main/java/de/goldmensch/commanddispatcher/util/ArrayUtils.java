@@ -30,4 +30,13 @@ public class ArrayUtils {
         return biggest;
     }
 
+    public static String buildString(String[] a) {
+        StringBuilder builder = new StringBuilder();
+        for(String c : a) {
+            builder.append(a);
+            builder.append(" ");
+        }
+        return builder.toString().trim();
+    }
+
 }
