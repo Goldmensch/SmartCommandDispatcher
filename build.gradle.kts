@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "de.goldmensch"
-version = "1.0-DEV"
+version = "1.0.1"
 
 repositories {
     mavenCentral()
