@@ -16,6 +16,13 @@ import java.util.*;
 public abstract class SmartCommand implements TabExecutor {
     private final Map<String[], SmartSubCommand> subCommandMap = new HashMap<>();
 
+    /***
+     * <p>Registers a subcommand, the subcommand may occur only once with the same path!</p>
+     * <p>Example: 'registerSubCommand(new AboutSub(ExecutorLevel.CONSOLE_PLAYER, ""), "about");'</p>
+     *
+     * @param command The subcommand to be executed
+     * @param args the complete path of the command including name
+     */
     public void registerSubCommand(SmartSubCommand command, String... args) {
         args = ArrayUtils.toLowerCase(args);
         if(isValid(args)) {
@@ -31,7 +38,7 @@ public abstract class SmartCommand implements TabExecutor {
                && (!subCommandMap.containsKey(args));
     }
 
-    public Optional<ArgValuedSubCommand> searchSub(String[] args) {
+    private Optional<ArgValuedSubCommand> searchSub(String[] args) {
         Set<String[]> possibleSubCommand = new HashSet<>();
         for (String[] c : subCommandMap.keySet()) {
             if(ArrayUtils.startWith(args, c)) {
@@ -52,12 +59,24 @@ public abstract class SmartCommand implements TabExecutor {
         return new ArgValuedSubCommand(matchCommand, newArgs);
     }
 
+    /***
+     * @hidden
+     */
     public abstract boolean noSubFound(String[] args, CommandSender sender, Command command, String label);
 
+    /***
+     * @hidden
+     */
     public abstract void wrongExecutorLevel(ArgValuedSubCommand command, CommandSender sender);
 
+    /***
+     * @hidden
+     */
     public abstract void noPermission(ArgValuedSubCommand command, CommandSender sender);
 
+    /***
+     * @hidden
+     */
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         Optional<ArgValuedSubCommand> optional = searchSub(args);
@@ -95,6 +114,9 @@ public abstract class SmartCommand implements TabExecutor {
         return false;
     }
 
+    /***
+     * @hidden
+     */
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] a) {
         List<String> completion = new ArrayList<>();
