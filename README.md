@@ -2,7 +2,7 @@
 # SmartCommandDispatcher
 a small simple library to build complicated commands for paper (spigot).
 
-latest JavaDoc: [JavaDoc](https://goldmensch.github.io/SmartCommandDispatcher/")
+latest JavaDoc: [JavaDoc](https://goldmensch.github.io/SmartCommandDispatcher/)
 
 ## Dependency
 Gradle
