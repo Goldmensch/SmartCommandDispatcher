@@ -27,6 +27,9 @@ tasks {
     javadoc {
         exclude("de/goldmensch/testdispatcher/**", "de/goldmensch/commanddispatcher/util/**")
         (options as StandardJavadocDocletOptions).addStringOption("Xdoclint:none", "-quiet")
+
+        options.encoding = "UTF-8"
+        setDestinationDir(projectDir.resolve("docs"))
     }
 }
 
