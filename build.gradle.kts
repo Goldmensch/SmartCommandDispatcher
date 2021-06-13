@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "de.goldmensch"
-version = "1.0.1"
+version = "1.0.2"
 
 repositories {
     mavenCentral()
@@ -19,8 +19,18 @@ dependencies {
     testImplementation("com.destroystokyo.paper:paper-api:1.16.5-R0.1-SNAPSHOT")
 }
 
-tasks.getByName<Test>("test") {
-    useJUnitPlatform()
+tasks {
+    getByName<Test>("test") {
+        useJUnitPlatform()
+    }
+
+    javadoc {
+        exclude("de/goldmensch/testdispatcher/**", "de/goldmensch/commanddispatcher/util/**")
+        (options as StandardJavadocDocletOptions).addStringOption("Xdoclint:none", "-quiet")
+
+        options.encoding = "UTF-8"
+        setDestinationDir(projectDir.resolve("docs"))
+    }
 }
 
 publishing {
