@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"de.goldmensch.commanddispatcher"},{"l":"de.goldmensch.commanddispatcher.command"},{"l":"de.goldmensch.commanddispatcher.exceptions"},{"l":"de.goldmensch.commanddispatcher.subcommand"}];updateSearchResults();
