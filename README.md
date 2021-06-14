@@ -1,7 +1,7 @@
 ![Sonatype Nexus(Releases)](https://img.shields.io/nexus/maven-releases/de.goldmensch/SmartCommandDispatcher?label=Release&logo=Release&server=https%3A%2F%2Feldonexus.de&style=for-the-badge)
 ![Sonatype Nexus (Development)](https://img.shields.io/nexus/maven-dev/de.goldmensch/SmartCommandDispatcher?label=DEV&logo=Release&server=https%3A%2F%2Feldonexus.de&style=for-the-badge)
 # SmartCommandDispatcher
-a small simple library to build complicated commands for paper (spigot).
+a small simple library to build complicated commands for spigot.
 
 latest JavaDoc: [JavaDoc](https://goldmensch.github.io/SmartCommandDispatcher/)
 

@@ -4,16 +4,18 @@ plugins {
 }
 
 group = "de.goldmensch"
-version = "1.0.2"
+version = "1.0.3"
 
 
 repositories {
     mavenCentral()
-    maven("https://papermc.io/repo/repository/maven-public/")
+    maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
 }
 
 dependencies {
-    compileOnly("com.destroystokyo.paper:paper-api:1.16.5-R0.1-SNAPSHOT")
+    implementation("org.jetbrains:annotations:20.1.0")
+    compileOnly("org.spigotmc:spigot-api:1.17-R0.1-SNAPSHOT")
+
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.0")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
