@@ -12,6 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public abstract class SmartCommand implements TabExecutor {
     private final Map<String[], SmartSubCommand> subCommandMap = new HashMap<>();
@@ -33,12 +34,12 @@ public abstract class SmartCommand implements TabExecutor {
         }
     }
 
-    private boolean isValid(String[] args) {
+    protected boolean isValid(String[] args) {
        return (args.length != 0)
                && (!subCommandMap.containsKey(args));
     }
 
-    private Optional<ArgValuedSubCommand> searchSub(String[] args) {
+    protected Optional<ArgValuedSubCommand> searchSub(String[] args) {
         Set<String[]> possibleSubCommand = new HashSet<>();
         for (String[] c : subCommandMap.keySet()) {
             if(ArrayUtils.startWith(args, c)) {
@@ -51,7 +52,7 @@ public abstract class SmartCommand implements TabExecutor {
                 : Optional.empty();
     }
 
-    private ArgValuedSubCommand getValuedCommand(String[] args, Set<String[]> possibleCommands) {
+    protected ArgValuedSubCommand getValuedCommand(String[] args, Set<String[]> possibleCommands) {
         String[] matchArgs = ArraySetUtils.getBiggest(possibleCommands);
         SmartSubCommand matchCommand = subCommandMap.get(matchArgs);
         String[] newArgs = Arrays.copyOfRange(args, matchArgs.length, args.length);
@@ -98,7 +99,7 @@ public abstract class SmartCommand implements TabExecutor {
         return foundCommand.getCommand().onCommand(sender, command, label, foundCommand.getArgs());
     }
 
-    private boolean checkLevel(CommandSender sender, ArgValuedSubCommand command) {
+    protected boolean checkLevel(CommandSender sender, ArgValuedSubCommand command) {
         ExecutorLevel level = command.getCommand().getExecutorLevel();
         if(level != ExecutorLevel.CONSOLE_PLAYER) {
             return ExecutorLevel.getFromSender(sender) != level;
@@ -106,7 +107,7 @@ public abstract class SmartCommand implements TabExecutor {
         return false;
     }
 
-    private boolean checkPermission(CommandSender sender, ArgValuedSubCommand command) {
+    protected boolean checkPermission(CommandSender sender, ArgValuedSubCommand command) {
         SmartSubCommand subCommand = command.getCommand();
         if(subCommand.hasPermission()) {
             return !sender.hasPermission(subCommand.getPermission());
@@ -149,12 +150,22 @@ public abstract class SmartCommand implements TabExecutor {
         return completion;
     }
 
-    private boolean checkPermissionAndExecutor(CommandSender sender, SmartSubCommand command) {
+    protected boolean checkPermissionAndExecutor(CommandSender sender, SmartSubCommand command) {
         ExecutorLevel level = command.getExecutorLevel();
         if(level != ExecutorLevel.CONSOLE_PLAYER) {
             if(level != ExecutorLevel.getFromSender(sender)) return true;
         }
         return command.hasPermission() && !sender.hasPermission(command.getPermission());
+    }
+
+    protected Map<String[], SmartSubCommand> getAllSubFor(CommandSender sender) {
+        return subCommandMap.entrySet().stream()
+                .filter(entry -> checkPermissionAndExecutor(sender, entry.getValue()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+    }
+
+    protected Map<String[], SmartSubCommand> getSubCommandMap() {
+        return subCommandMap;
     }
 }
 
