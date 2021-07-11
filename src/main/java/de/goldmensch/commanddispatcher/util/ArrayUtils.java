@@ -33,7 +33,7 @@ public class ArrayUtils {
     public static String buildString(String[] a) {
         StringBuilder builder = new StringBuilder();
         for(String c : a) {
-            builder.append(a);
+            builder.append(c);
             builder.append(" ");
         }
         return builder.toString().trim();
