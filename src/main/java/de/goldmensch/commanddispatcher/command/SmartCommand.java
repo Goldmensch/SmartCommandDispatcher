@@ -160,7 +160,7 @@ public abstract class SmartCommand implements TabExecutor {
 
     protected Map<String[], SmartSubCommand> getAllSubFor(CommandSender sender) {
         return subCommandMap.entrySet().stream()
-                .filter(entry -> checkPermissionAndExecutor(sender, entry.getValue()))
+                .filter(entry -> !checkPermissionAndExecutor(sender, entry.getValue()))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
