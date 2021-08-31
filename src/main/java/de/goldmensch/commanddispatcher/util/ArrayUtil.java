@@ -1,8 +1,13 @@
 package de.goldmensch.commanddispatcher.util;
 
-public class ArrayUtils {
+import org.jetbrains.annotations.NotNull;
 
-    public static <T> boolean startWith(T[] r, T[] s) {
+public class ArrayUtil {
+
+    private ArrayUtil() {
+    }
+
+    public static <T> boolean startWith(@NotNull T[] r, @NotNull T[] s) {
         if(s.length > r.length) return false;
         for(int i = 0; i < s.length; i++) {
             if(!r[i].equals(s[i])) {
@@ -12,26 +17,16 @@ public class ArrayUtils {
         return true;
     }
 
-    public static String[] toLowerCase(String[] a) {
-        String[] lowerArray = new String[a.length];
+    public static @NotNull String[] toLowerCase(@NotNull String[] a) {
+        var lowerArray = new String[a.length];
         for(int i = 0; i < a.length; i++) {
             lowerArray[i] = a[i].toLowerCase();
         }
         return lowerArray;
     }
 
-    public static <T> T[] getBiggest(T[]... arrays) {
-        T[] biggest = arrays[0];
-        for(T[] c : arrays) {
-            if(arrays.length > biggest.length) {
-                biggest = c;
-            }
-        }
-        return biggest;
-    }
-
-    public static String buildString(String[] a) {
-        StringBuilder builder = new StringBuilder();
+    public static @NotNull String buildString(@NotNull String[] a) {
+        var builder = new StringBuilder();
         for(String c : a) {
             builder.append(c);
             builder.append(" ");

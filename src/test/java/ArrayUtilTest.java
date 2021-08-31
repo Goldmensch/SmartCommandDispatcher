@@ -1,6 +1,4 @@
-import de.goldmensch.commanddispatcher.util.ArrayUtils;
-
-import java.util.Arrays;
+import de.goldmensch.commanddispatcher.util.ArrayUtil;
 
 public class ArrayUtilTest {
 
@@ -9,12 +7,12 @@ public class ArrayUtilTest {
         String[] command = new String[]{"test", "test1"};
         String[] invalid = new String[]{"vogel"};
 
-        System.out.println(ArrayUtils.startWith(args, command));
-        System.out.println(ArrayUtils.startWith(args, invalid));
+        System.out.println(ArrayUtil.startWith(args, command));
+        System.out.println(ArrayUtil.startWith(args, invalid));
 
         String[] upperCase = new String[]{"Vögel", "KÖNNEN", "FLIGEN"};
 
-        System.out.println(Arrays.stream(ArrayUtils.toLowerCase(upperCase)).toList());
+        System.out.println(java.util.Arrays.stream(ArrayUtil.toLowerCase(upperCase)).toList());
     }
 
 }

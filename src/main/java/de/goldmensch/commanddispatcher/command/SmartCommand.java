@@ -1,21 +1,22 @@
 package de.goldmensch.commanddispatcher.command;
 
-import de.goldmensch.commanddispatcher.ExecutorLevel;
+import de.goldmensch.commanddispatcher.Commands;
 import de.goldmensch.commanddispatcher.exceptions.CommandNotValidException;
 import de.goldmensch.commanddispatcher.subcommand.SmartSubCommand;
-import de.goldmensch.commanddispatcher.util.ArraySetUtils;
-import de.goldmensch.commanddispatcher.util.ArrayUtils;
+import de.goldmensch.commanddispatcher.util.ArraySets;
+import de.goldmensch.commanddispatcher.util.ArrayUtil;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.command.TabExecutor;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public abstract class SmartCommand implements TabExecutor {
-    private final Map<String[], SmartSubCommand> subCommandMap = new HashMap<>();
+    private final HashMap<String[], SmartSubCommand> subCommandMap = new HashMap<>();
 
     /***
      * <p>Registers a subcommand, the subcommand may occur only once with the same path!</p>
@@ -24,125 +25,109 @@ public abstract class SmartCommand implements TabExecutor {
      * @param command The subcommand to be executed
      * @param args the complete path of the command including name
      */
-    public void registerSubCommand(SmartSubCommand command, String... args) {
-        args = ArrayUtils.toLowerCase(args);
+    public void registerSubCommand(@NotNull SmartSubCommand command, @NotNull String... args) {
+        args = ArrayUtil.toLowerCase(args);
         if(isValid(args)) {
-            command.setName(ArrayUtils.buildString(args));
+            command.setName(ArrayUtil.buildString(args));
             subCommandMap.put(args, command);
         }else {
             throw new CommandNotValidException(command.getClass());
         }
     }
 
-    protected boolean isValid(String[] args) {
+    protected boolean isValid(@NotNull String[] args) {
        return (args.length != 0)
                && (!subCommandMap.containsKey(args));
     }
 
-    protected Optional<ArgValuedSubCommand> searchSub(String[] args) {
-        Set<String[]> possibleSubCommand = new HashSet<>();
-        for (String[] c : subCommandMap.keySet()) {
-            if(ArrayUtils.startWith(args, c)) {
-                possibleSubCommand.add(c);
+    protected @NotNull Optional<SubCommandEntity> searchSub(@NotNull String[] args) {
+        var possibleSubCommand = new HashSet<String[]>();
+        for (var posArgs : subCommandMap.keySet()) {
+            if(ArrayUtil.startWith(posArgs, posArgs)) {
+                possibleSubCommand.add(posArgs);
             }
         }
 
-        return possibleSubCommand.size() != 0
-                ? Optional.of(getValuedCommand(args, possibleSubCommand))
+        return !possibleSubCommand.isEmpty()
+                ? Optional.of(getBiggest(args, possibleSubCommand))
                 : Optional.empty();
     }
 
-    protected ArgValuedSubCommand getValuedCommand(String[] args, Set<String[]> possibleCommands) {
-        String[] matchArgs = ArraySetUtils.getBiggest(possibleCommands);
-        SmartSubCommand matchCommand = subCommandMap.get(matchArgs);
-        String[] newArgs = Arrays.copyOfRange(args, matchArgs.length, args.length);
-
-        return new ArgValuedSubCommand(matchCommand, newArgs);
+    private @NotNull SubCommandEntity getBiggest(@NotNull String[] args, @NotNull Set<String[]> possibleCommands) {
+        var matchArgs = ArraySets.getBiggest(possibleCommands);
+        return new SubCommandEntity(subCommandMap.get(matchArgs), Arrays.copyOfRange(args, matchArgs.length, args.length));
     }
 
     /***
      * @hidden
      */
-    public abstract boolean noSubFound(String[] args, CommandSender sender, Command command, String label);
+    public abstract boolean noSubFound(@NotNull String[] args, @NotNull CommandSender sender, @NotNull Command command, @NotNull String label);
 
     /***
      * @hidden
      */
-    public abstract void wrongExecutorLevel(ArgValuedSubCommand command, CommandSender sender);
+    public abstract void wrongExecutorLevel(@NotNull SubCommandEntity command, @NotNull CommandSender sender);
 
     /***
      * @hidden
      */
-    public abstract void noPermission(ArgValuedSubCommand command, CommandSender sender);
+    public abstract void noPermission(@NotNull SubCommandEntity command, @NotNull CommandSender sender);
 
     /***
      * @hidden
      */
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        Optional<ArgValuedSubCommand> optional = searchSub(args);
-        if(optional.isEmpty()) {
-            return noSubFound(args, sender, command, label);
+    @ApiStatus.Internal
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command bukkitCommand, @NotNull String label, @NotNull String[] args) {
+        var posSubCommand = searchSub(args);
+        if(posSubCommand.isEmpty()) {
+            return noSubFound(args, sender, bukkitCommand, label);
         }
 
-        ArgValuedSubCommand foundCommand = optional.get();
-        if(checkLevel(sender, foundCommand)) {
+        var foundCommand = posSubCommand.get();
+        var command = foundCommand.getCommand();
+        if(!Commands.checkExecutor(sender, command.getExecutorLevel())) {
             wrongExecutorLevel(foundCommand, sender);
             return true;
         }
 
-        if(checkPermission(sender, foundCommand)) {
+        if(!Commands.checkPermission(sender, command.getPermission())) {
             noPermission(foundCommand, sender);
             return true;
         }
 
-        return foundCommand.getCommand().onCommand(sender, command, label, foundCommand.getArgs());
-    }
-
-    protected boolean checkLevel(CommandSender sender, ArgValuedSubCommand command) {
-        ExecutorLevel level = command.getCommand().getExecutorLevel();
-        if(level != ExecutorLevel.CONSOLE_PLAYER) {
-            return ExecutorLevel.getFromSender(sender) != level;
-        }
-        return false;
-    }
-
-    protected boolean checkPermission(CommandSender sender, ArgValuedSubCommand command) {
-        SmartSubCommand subCommand = command.getCommand();
-        if(subCommand.hasPermission()) {
-            return !sender.hasPermission(subCommand.getPermission());
-        }
-        return false;
+        return foundCommand.getCommand().onCommand(sender, bukkitCommand, label, foundCommand.getArgs());
     }
 
     /***
      * @hidden
      */
     @Override
+    @ApiStatus.Internal
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] a) {
-        List<String> completion = new ArrayList<>();
+        var completion = new ArrayList<String>();
 
-        String[] args = ArrayUtils.toLowerCase(a);
-        String[] argPath = Arrays.copyOf(args, args.length-1);
+        var args = ArrayUtil.toLowerCase(a);
+        var argPath = java.util.Arrays.copyOf(args, args.length-1);
 
-        for(Map.Entry<String[], SmartSubCommand> c : subCommandMap.entrySet()) {
-            int argLength = args.length-1;
-            String[] comArgs = c.getKey();
+        for(var sub : subCommandMap.entrySet()) {
+            var argLength = args.length-1;
+            var comArgs = sub.getKey();
 
-            if(checkPermissionAndExecutor(sender, c.getValue()) || (comArgs.length < args.length)) continue;
-            String[] comPath = Arrays.copyOf(comArgs, argLength);
-            if(Arrays.equals(comPath, argPath)) {
-                String comArg = comArgs[argLength];
-                String arg = args[argLength];
+            if(!Commands.checkPermissionAndExecutor(sender, sub.getValue()) || (comArgs.length < args.length)) continue;
+            var comPath = java.util.Arrays.copyOf(comArgs, argLength);
+            if(java.util.Arrays.equals(comPath, argPath)) {
+                var comArg = comArgs[argLength];
+                var arg = args[argLength];
                 if(comArg.startsWith(arg)) completion.add(comArg);
             }
         }
 
-        Optional<ArgValuedSubCommand> foundCommand = searchSub(args);
+        var foundCommand = searchSub(args);
         if(foundCommand.isPresent()) {
-            SmartSubCommand subCommand = foundCommand.get().getCommand();
-            if(!checkPermissionAndExecutor(sender, subCommand)) {
-                List<String> commandCompletion = subCommand.onTabComplete(sender, command, alias, foundCommand.get().getArgs());
+            var subCommand = foundCommand.get().getCommand();
+            if(Commands.checkPermissionAndExecutor(sender, subCommand) && subCommand instanceof TabCompleter tabCompleter) {
+                var commandCompletion = tabCompleter.onTabComplete(sender, command, alias, foundCommand.get().getArgs());
                 if(commandCompletion != null) completion.addAll(commandCompletion);
             }
         }
@@ -150,22 +135,35 @@ public abstract class SmartCommand implements TabExecutor {
         return completion;
     }
 
-    protected boolean checkPermissionAndExecutor(CommandSender sender, SmartSubCommand command) {
-        ExecutorLevel level = command.getExecutorLevel();
-        if(level != ExecutorLevel.CONSOLE_PLAYER) {
-            if(level != ExecutorLevel.getFromSender(sender)) return true;
+    protected @NotNull Map<String[], SmartSubCommand> getSubCommandMap() {
+        return Collections.unmodifiableMap(subCommandMap);
+    }
+
+    public static final class SubCommandEntity {
+        private final SmartSubCommand command;
+        private final String[] args;
+
+        private SubCommandEntity(@NotNull SmartSubCommand command, @NotNull String[] args) {
+            this.command = command;
+            this.args = args;
         }
-        return command.hasPermission() && !sender.hasPermission(command.getPermission());
-    }
 
-    protected Map<String[], SmartSubCommand> getAllSubFor(CommandSender sender) {
-        return subCommandMap.entrySet().stream()
-                .filter(entry -> !checkPermissionAndExecutor(sender, entry.getValue()))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-    }
+        /***
+         * <p>The new arguments are the arguments without the path and the name of the command.</p>
+         * <p>Example: subcommand path : "arg0 name" </p>
+         * <p>path: "arg0 name value" becomes Arguments: "value"</p>
+         * @return The new Arguments of the command.
+         */
+        public @NotNull String[] getArgs() {
+            return args;
+        }
 
-    protected Map<String[], SmartSubCommand> getSubCommandMap() {
-        return subCommandMap;
+        /***
+         * @return The SubCommand
+         */
+        public @NotNull SmartSubCommand getCommand() {
+            return command;
+        }
     }
 }
 

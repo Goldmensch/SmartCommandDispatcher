@@ -1,38 +1,43 @@
 package de.goldmensch.commanddispatcher.subcommand;
 
-import de.goldmensch.commanddispatcher.ExecutorLevel;
-import org.bukkit.command.TabExecutor;
+import de.goldmensch.commanddispatcher.Executor;
+import org.bukkit.command.CommandExecutor;
+import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public abstract class SmartSubCommand implements TabExecutor {
+import java.util.Optional;
 
-    private final ExecutorLevel executorLevel;
+public abstract class SmartSubCommand implements CommandExecutor {
+
+    private final Executor executor;
     private String name;
     private final String permission;
 
-    public SmartSubCommand(ExecutorLevel executorLevel, String permission) {
-        this.executorLevel = executorLevel;
+    public SmartSubCommand(@NotNull Executor executor, @Nullable String permission) {
+        this.executor = executor;
         this.permission = permission;
     }
 
-    /***
-     * @param name The Name of the SubCommand
-     */
-    public void setName(String name) {
+    @ApiStatus.Internal
+    public void setName(@NotNull String name) {
         this.name = name;
     }
 
     /***
-     * @return The {@link ExecutorLevel} of the SubCommand
+     * @return The {@link Executor} of the SubCommand
      */
-    public ExecutorLevel getExecutorLevel() {
-        return executorLevel;
+    public @NotNull Executor getExecutorLevel() {
+        return executor;
     }
 
     /***
      * @return The permission of the SubCommand
      */
-    public String getPermission() {
-        return permission;
+    public @NotNull Optional<String> getPermission() {
+        return permission.isEmpty()
+                ? Optional.empty()
+                : Optional.of(permission);
     }
 
     /***
@@ -40,14 +45,7 @@ public abstract class SmartSubCommand implements TabExecutor {
      * <p>Example: The StringArray {"arg0", "arg1", "name"} becomes "arg0 arg1 name"</p>
      * @return The name of the SubCommand
      */
-    public String getName() {
+    public @NotNull String getName() {
         return name;
-    }
-
-    /***
-     * @return true if the command has a permission
-     */
-    public boolean hasPermission() {
-        return !permission.equals("");
     }
 }

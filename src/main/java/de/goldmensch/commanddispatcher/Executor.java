@@ -2,8 +2,9 @@ package de.goldmensch.commanddispatcher;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
-public enum ExecutorLevel {
+public enum Executor {
     /***
      * The command can be executed only from the console.
      */
@@ -22,11 +23,10 @@ public enum ExecutorLevel {
      * @param sender The CommandSender
      * @return The ExecutorLevel that corresponds to the CommandSender.
      */
-    public static ExecutorLevel getFromSender(CommandSender sender) {
+    public static Executor fromSender(@NotNull CommandSender sender) {
         if(sender instanceof Player) {
-            return ExecutorLevel.PLAYER;
-        }else {
-            return ExecutorLevel.CONSOLE;
+            return Executor.PLAYER;
         }
+        return Executor.CONSOLE;
     }
 }
