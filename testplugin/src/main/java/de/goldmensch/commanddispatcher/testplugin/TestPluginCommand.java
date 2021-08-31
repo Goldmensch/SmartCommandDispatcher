@@ -1,5 +1,6 @@
 package de.goldmensch.commanddispatcher.testplugin;
 
+import commanddispatcher.Executor;
 import commanddispatcher.command.SmartCommand;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -18,7 +19,7 @@ public class TestPluginCommand extends SmartCommand {
     }
 
     @Override
-    public void wrongExecutorLevel(@NotNull SubCommandEntity command, @NotNull CommandSender sender) {
+    public void wrongExecutor(@NotNull SubCommandEntity command, @NotNull CommandSender sender, @NotNull Executor executor) {
         sender.sendMessage("wrong Executor");
     }
 

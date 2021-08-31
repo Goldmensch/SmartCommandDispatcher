@@ -22,7 +22,7 @@ public final class Commands {
     }
 
     public static boolean checkPermissionAndExecutor(@NotNull CommandSender sender, @NotNull SmartSubCommand command) {
-        return Commands.checkExecutor(sender, command.getExecutorLevel())
+        return Commands.checkExecutor(sender, command.getExecutor())
                 && Commands.checkPermission(sender, command.getPermission());
     }
 }

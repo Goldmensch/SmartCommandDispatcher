@@ -27,7 +27,7 @@ public abstract class SmartSubCommand implements CommandExecutor {
     /***
      * @return The {@link Executor} of the SubCommand
      */
-    public @NotNull Executor getExecutorLevel() {
+    public @NotNull Executor getExecutor() {
         return executor;
     }
 

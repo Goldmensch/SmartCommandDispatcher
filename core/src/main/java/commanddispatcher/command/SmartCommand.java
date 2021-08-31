@@ -1,6 +1,7 @@
 package commanddispatcher.command;
 
 import commanddispatcher.Commands;
+import commanddispatcher.Executor;
 import commanddispatcher.exceptions.CommandNotValidException;
 import commanddispatcher.subcommand.SmartSubCommand;
 import commanddispatcher.ArraySets;
@@ -66,7 +67,7 @@ public abstract class SmartCommand implements TabExecutor {
     /***
      * @hidden
      */
-    public abstract void wrongExecutorLevel(@NotNull SubCommandEntity command, @NotNull CommandSender sender);
+    public abstract void wrongExecutor(@NotNull SubCommandEntity command, @NotNull CommandSender sender, @NotNull Executor requiredExecutor);
 
     /***
      * @hidden
@@ -86,8 +87,8 @@ public abstract class SmartCommand implements TabExecutor {
 
         var foundCommand = posSubCommand.get();
         var command = foundCommand.getCommand();
-        if(!Commands.checkExecutor(sender, command.getExecutorLevel())) {
-            wrongExecutorLevel(foundCommand, sender);
+        if(!Commands.checkExecutor(sender, command.getExecutor())) {
+            wrongExecutor(foundCommand, sender, command.getExecutor());
             return true;
         }
 

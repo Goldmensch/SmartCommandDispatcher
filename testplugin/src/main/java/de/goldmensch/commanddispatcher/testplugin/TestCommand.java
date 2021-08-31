@@ -1,5 +1,6 @@
 package de.goldmensch.commanddispatcher.testplugin;
 
+import commanddispatcher.Commands;
 import commanddispatcher.Executor;
 import commanddispatcher.subcommand.SmartSubCommand;
 import org.bukkit.command.Command;
