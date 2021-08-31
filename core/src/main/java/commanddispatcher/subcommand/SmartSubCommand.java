@@ -11,8 +11,9 @@ import java.util.Optional;
 public abstract class SmartSubCommand implements CommandExecutor {
 
     private final Executor executor;
-    private String name;
     private final String permission;
+    private String name;
+    private String description;
 
     public SmartSubCommand(@NotNull Executor executor, @Nullable String permission) {
         this.executor = executor;
@@ -22,6 +23,11 @@ public abstract class SmartSubCommand implements CommandExecutor {
     @ApiStatus.Internal
     public void setName(@NotNull String name) {
         this.name = name;
+    }
+
+    @ApiStatus.Internal
+    public void setDescription(@NotNull String description) {
+        this.description = description;
     }
 
     /***
@@ -47,5 +53,9 @@ public abstract class SmartSubCommand implements CommandExecutor {
      */
     public @NotNull String getName() {
         return name;
+    }
+
+    public @NotNull Optional<String> getDescription() {
+        return Optional.ofNullable(description);
     }
 }

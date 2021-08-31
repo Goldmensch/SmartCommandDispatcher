@@ -2,6 +2,7 @@ package commanddispatcher.command;
 
 import commanddispatcher.Commands;
 import commanddispatcher.Executor;
+import commanddispatcher.annotations.Description;
 import commanddispatcher.exceptions.CommandNotValidException;
 import commanddispatcher.subcommand.SmartSubCommand;
 import commanddispatcher.ArraySets;
@@ -30,9 +31,18 @@ public abstract class SmartCommand implements TabExecutor {
         args = ArrayUtil.toLowerCase(args);
         if(isValid(args)) {
             command.setName(ArrayUtil.buildString(args));
+            addAnnotations(command);
             subCommandMap.put(args, command);
         }else {
             throw new CommandNotValidException(command.getClass());
+        }
+    }
+
+    private void addAnnotations(@NotNull SmartSubCommand command) {
+        for(var ann : command.getClass().getAnnotations()) {
+            if(ann instanceof Description description) {
+                command.setDescription(description.value());
+            }
         }
     }
 
