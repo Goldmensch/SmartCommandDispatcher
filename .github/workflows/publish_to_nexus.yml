@@ -18,11 +18,11 @@ jobs:
           distribution: adopt
           java-version: 16
       - name: Build with Gradle
-        run: ./gradlew --build-cache build
+        run: ./gradlew --build-cache core:build
       - name: Test with Gradle
         run: ./gradlew test
       - name: Publish to eldonexus
-        run: ./gradlew publishMavenPublicationToEldoNexusRepository
+        run: ./gradlew core:publishMavenPublicationToEldoNexusRepository
         env:
           NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME }}
           NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
