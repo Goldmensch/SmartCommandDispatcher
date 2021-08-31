@@ -1,0 +1,6 @@
+name: TestPlugin
+version: 1.0
+main: de.goldmensch.commanddispatcher.testplugin.TestPlugin
+
+commands:
+  test:

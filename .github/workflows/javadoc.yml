@@ -7,8 +7,6 @@ on:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
     branches: [ master ]
-  pull_request:
-    branches: [ master ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -28,13 +26,13 @@ jobs:
       - name: Build Javadocs
         run: |
             echo "Building javadocs with gradle"
-            ./gradlew javadoc
+            ./gradlew core:javadoc
             echo "Moving to javadocs directory:"
-            cd docs
+            cd core/docs
             echo "Creating .nojekyll to have Github pages deploy html as is:"
             touch .nojekyll
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@4.0.0
         with:
           branch: gh-pages # The branch the action should deploy to.
-          folder: docs # The folder the action should deploy.
+          folder: core/docs # The folder the action should deploy.

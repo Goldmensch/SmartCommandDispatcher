@@ -4,8 +4,7 @@ plugins {
 }
 
 group = "de.goldmensch"
-version = "2.0"
-
+version = "1.0.5"
 
 repositories {
     mavenCentral()
@@ -15,7 +14,6 @@ repositories {
 dependencies {
     implementation("org.jetbrains:annotations:20.1.0")
     compileOnly("org.spigotmc:spigot-api:1.17-R0.1-SNAPSHOT")
-
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.0")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
