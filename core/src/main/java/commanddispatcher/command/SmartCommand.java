@@ -1,10 +1,10 @@
-package de.goldmensch.commanddispatcher.command;
+package commanddispatcher.command;
 
-import de.goldmensch.commanddispatcher.Commands;
-import de.goldmensch.commanddispatcher.exceptions.CommandNotValidException;
-import de.goldmensch.commanddispatcher.subcommand.SmartSubCommand;
-import de.goldmensch.commanddispatcher.util.ArraySets;
-import de.goldmensch.commanddispatcher.util.ArrayUtil;
+import commanddispatcher.Commands;
+import commanddispatcher.exceptions.CommandNotValidException;
+import commanddispatcher.subcommand.SmartSubCommand;
+import commanddispatcher.util.ArraySets;
+import commanddispatcher.util.ArrayUtil;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -43,7 +43,7 @@ public abstract class SmartCommand implements TabExecutor {
     protected @NotNull Optional<SubCommandEntity> searchSub(@NotNull String[] args) {
         var possibleSubCommand = new HashSet<String[]>();
         for (var posArgs : subCommandMap.keySet()) {
-            if(ArrayUtil.startWith(posArgs, posArgs)) {
+            if(ArrayUtil.startWith(args, posArgs)) {
                 possibleSubCommand.add(posArgs);
             }
         }

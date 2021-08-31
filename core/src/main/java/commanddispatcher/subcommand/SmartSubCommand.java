@@ -1,6 +1,6 @@
-package de.goldmensch.commanddispatcher.subcommand;
+package commanddispatcher.subcommand;
 
-import de.goldmensch.commanddispatcher.Executor;
+import commanddispatcher.Executor;
 import org.bukkit.command.CommandExecutor;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;

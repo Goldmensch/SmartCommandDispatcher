@@ -1,4 +1,4 @@
-package de.goldmensch.commanddispatcher.util;
+package commanddispatcher.util;
 
 import org.jetbrains.annotations.NotNull;
 
