@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "de.goldmensch"
-version = "1.0.5"
+version = "2.0"
 
 repositories {
     mavenCentral()
@@ -38,7 +38,7 @@ publishing {
     publications.create<MavenPublication>("maven") {
         from(components["java"])
         groupId = project.group as String?
-        artifactId = project.name
+        artifactId = rootProject.name
         version = publishData.getVersion()
     }
 
