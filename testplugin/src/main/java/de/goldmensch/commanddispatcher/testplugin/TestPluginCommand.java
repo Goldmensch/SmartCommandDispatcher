@@ -1,7 +1,7 @@
 package de.goldmensch.commanddispatcher.testplugin;
 
-import commanddispatcher.Executor;
-import commanddispatcher.command.SmartCommand;
+import de.goldmensch.commanddispatcher.Executor;
+import de.goldmensch.commanddispatcher.command.SmartCommand;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;

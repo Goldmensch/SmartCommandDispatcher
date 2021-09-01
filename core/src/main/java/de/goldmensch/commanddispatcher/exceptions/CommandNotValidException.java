@@ -1,6 +1,6 @@
-package commanddispatcher.exceptions;
+package de.goldmensch.commanddispatcher.exceptions;
 
-import commanddispatcher.subcommand.SmartSubCommand;
+import de.goldmensch.commanddispatcher.subcommand.SmartSubCommand;
 import org.jetbrains.annotations.NotNull;
 
 public class CommandNotValidException extends RuntimeException{
