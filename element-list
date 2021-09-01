@@ -1,5 +1,5 @@
-commanddispatcher
-commanddispatcher.annotations
-commanddispatcher.command
-commanddispatcher.exceptions
-commanddispatcher.subcommand
+de.goldmensch.commanddispatcher
+de.goldmensch.commanddispatcher.annotations
+de.goldmensch.commanddispatcher.command
+de.goldmensch.commanddispatcher.exceptions
+de.goldmensch.commanddispatcher.subcommand
