@@ -1,6 +1,6 @@
-package commanddispatcher;
+package de.goldmensch.commanddispatcher;
 
-import commanddispatcher.subcommand.SmartSubCommand;
+import de.goldmensch.commanddispatcher.subcommand.SmartSubCommand;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 

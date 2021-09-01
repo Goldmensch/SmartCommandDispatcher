@@ -1,12 +1,12 @@
-package commanddispatcher.command;
+package de.goldmensch.commanddispatcher.command;
 
-import commanddispatcher.Commands;
-import commanddispatcher.Executor;
-import commanddispatcher.annotations.Description;
-import commanddispatcher.exceptions.CommandNotValidException;
-import commanddispatcher.subcommand.SmartSubCommand;
-import commanddispatcher.ArraySets;
-import commanddispatcher.ArrayUtil;
+import de.goldmensch.commanddispatcher.Commands;
+import de.goldmensch.commanddispatcher.Executor;
+import de.goldmensch.commanddispatcher.annotations.Description;
+import de.goldmensch.commanddispatcher.exceptions.CommandNotValidException;
+import de.goldmensch.commanddispatcher.subcommand.SmartSubCommand;
+import de.goldmensch.commanddispatcher.ArraySets;
+import de.goldmensch.commanddispatcher.ArrayUtil;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;

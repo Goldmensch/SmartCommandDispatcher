@@ -1,4 +1,4 @@
-package commanddispatcher;
+package de.goldmensch.commanddispatcher;
 
 import org.jetbrains.annotations.NotNull;
 
