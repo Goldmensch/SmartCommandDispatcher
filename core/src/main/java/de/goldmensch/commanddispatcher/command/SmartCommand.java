@@ -102,7 +102,9 @@ public abstract class SmartCommand implements TabExecutor {
             return true;
         }
 
-        if(!Commands.checkPermission(sender, command.getPermission())) {
+        // Check that the user has at least one of the permissions
+        // (Or that there are no required permissions)
+        if (!Commands.checkPermissions(sender, command.getPermissions())) {
             noPermission(foundCommand, sender);
             return true;
         }
@@ -177,4 +179,3 @@ public abstract class SmartCommand implements TabExecutor {
         }
     }
 }
-

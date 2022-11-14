@@ -6,18 +6,19 @@ import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 public abstract class SmartSubCommand implements CommandExecutor {
 
     private final Executor executor;
-    private final String permission;
+    private final String[] permissions;
     private String name;
     private String description;
 
-    public SmartSubCommand(@NotNull Executor executor, @Nullable String permission) {
+    public SmartSubCommand(@NotNull Executor executor, @Nullable String... permissions) {
         this.executor = executor;
-        this.permission = permission;
+        this.permissions = permissions;
     }
 
     @ApiStatus.Internal
@@ -38,12 +39,10 @@ public abstract class SmartSubCommand implements CommandExecutor {
     }
 
     /***
-     * @return The permission of the SubCommand
+     * @return The permissions, only one of which a user must have, of the SubCommand
      */
-    public @NotNull Optional<String> getPermission() {
-        return permission.isEmpty()
-                ? Optional.empty()
-                : Optional.of(permission);
+    public @NotNull String[] getPermissions() {
+        return Arrays.copyOf(permissions, permissions.length);
     }
 
     /***
