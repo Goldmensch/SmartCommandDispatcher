@@ -24,7 +24,7 @@ public final class Commands {
             for (String permission : posPermissions) {
                 if (sender.hasPermission(permission)) {
                     // If the user has at least one, go ahead and break
-                    return false;
+                    return true;
                 }
             }
 
